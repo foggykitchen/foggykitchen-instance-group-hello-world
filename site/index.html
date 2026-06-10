@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FoggyKitchen Instance Group Hello World</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="FoggyKitchen home">
+        <span class="brand-mark">FK</span>
+        <span class="brand-copy">
+          <span class="brand-name">FoggyKitchen</span>
+          <span class="brand-line">Cloud. Code. Clarity.</span>
+        </span>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu" data-menu-toggle>
+        <span class="nav-toggle-line"></span>
+        <span class="nav-toggle-line"></span>
+        <span class="nav-toggle-line"></span>
+        <span class="sr-only">Toggle navigation</span>
+      </button>
+
+      <nav class="site-nav" id="site-menu" data-site-menu>
+        <a href="#delivery">Delivery</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#release">Release</a>
+        <a class="nav-cta" href="#health">Health Check</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">OCI DevOps Instance Group</p>
+          <h1>Application delivery for private compute behind a public load balancer.</h1>
+          <p class="lead">
+            A lightweight static application packaged as a binary artifact, rolled out to OCI Compute instances with OCI DevOps and exposed through a controlled public entry point.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#delivery">Explore the flow</a>
+            <a class="button button-secondary" href="#release">View release contract</a>
+          </div>
+        </div>
+
+        <aside class="signal-panel" aria-label="Deployment signal">
+          <div class="signal-header">
+            <span class="signal-dot"></span>
+            <span>Rolling deployment ready</span>
+          </div>
+          <dl class="signal-grid">
+            <div>
+              <dt>Artifact</dt>
+              <dd>tar.gz</dd>
+            </div>
+            <div>
+              <dt>Target</dt>
+              <dd>Instance group</dd>
+            </div>
+            <div>
+              <dt>Runtime</dt>
+              <dd>nginx</dd>
+            </div>
+            <div>
+              <dt>Traffic</dt>
+              <dd>OCI LB</dd>
+            </div>
+          </dl>
+        </aside>
+      </section>
+
+      <section class="section section-muted" id="delivery">
+        <div class="section-heading">
+          <p class="eyebrow">Delivery Model</p>
+          <h2>No container image. Just the right artifact for VM deployment.</h2>
+        </div>
+        <div class="steps">
+          <article>
+            <span class="step-number">01</span>
+            <h3>Package</h3>
+            <p>OCI DevOps build creates a binary archive from the static site, install script, and version file.</p>
+          </article>
+          <article>
+            <span class="step-number">02</span>
+            <h3>Deliver</h3>
+            <p>The pipeline publishes the archive as a deployable artifact for the compute instance group stage.</p>
+          </article>
+          <article>
+            <span class="step-number">03</span>
+            <h3>Roll Out</h3>
+            <p>The deployment spec runs through Compute Instance Run Command and updates private instances in batches.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section split" id="architecture">
+        <div>
+          <p class="eyebrow">Architecture</p>
+          <h2>Built for private backends and public validation.</h2>
+          <p>
+            The instances stay private. The load balancer is the only public entry point, while OCI DevOps executes the install workflow through the instance agent.
+          </p>
+        </div>
+        <div class="architecture-card">
+          <div class="arch-row">
+            <span>GitHub push</span>
+            <strong>Trigger</strong>
+          </div>
+          <div class="arch-row">
+            <span>Build pipeline</span>
+            <strong>Binary artifact</strong>
+          </div>
+          <div class="arch-row">
+            <span>Deploy pipeline</span>
+            <strong>Rolling stage</strong>
+          </div>
+          <div class="arch-row">
+            <span>Private compute</span>
+            <strong>nginx site</strong>
+          </div>
+          <div class="arch-row">
+            <span>Public access</span>
+            <strong>OCI Load Balancer</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="section release-band" id="release">
+        <div>
+          <p class="eyebrow">Release Contract</p>
+          <h2>Versioned, observable, repeatable.</h2>
+        </div>
+        <dl class="release-grid">
+          <div>
+            <dt>Application</dt>
+            <dd>foggykitchen-instance-group-hello-world</dd>
+          </div>
+          <div>
+            <dt>Version</dt>
+            <dd>1.0.0</dd>
+          </div>
+          <div>
+            <dt>Install path</dt>
+            <dd>/usr/share/nginx/html</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="section health" id="health">
+        <p class="eyebrow">Health Check</p>
+        <h2>If you can read this page through the load balancer, the deployment worked.</h2>
+        <p>
+          The deployment also writes <code>release.json</code> on each target host, so smoke tests can verify application version and backend identity after rollout.
+        </p>
+      </section>
+    </main>
+
+    <script>
+      const toggle = document.querySelector("[data-menu-toggle]");
+      const menu = document.querySelector("[data-site-menu]");
+
+      toggle.addEventListener("click", () => {
+        const isOpen = toggle.getAttribute("aria-expanded") === "true";
+        toggle.setAttribute("aria-expanded", String(!isOpen));
+        menu.classList.toggle("is-open", !isOpen);
+      });
+
+      menu.addEventListener("click", (event) => {
+        if (event.target.tagName === "A") {
+          toggle.setAttribute("aria-expanded", "false");
+          menu.classList.remove("is-open");
+        }
+      });
+    </script>
+  </body>
+</html>

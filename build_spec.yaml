@@ -1,0 +1,34 @@
+version: 0.1
+component: build
+timeoutInSeconds: 1200
+shell: bash
+
+env:
+  exportedVariables:
+    - BUILDRUN_HASH
+    - APP_VERSION
+
+steps:
+  - type: Command
+    name: define_version
+    timeoutInSeconds: 60
+    command: |
+      set -euo pipefail
+      export BUILDRUN_HASH="$(echo "${OCI_BUILD_RUN_ID}" | rev | cut -c 1-7)"
+      export APP_VERSION="$(cat VERSION)"
+      echo "BUILDRUN_HASH=${BUILDRUN_HASH}"
+      echo "APP_VERSION=${APP_VERSION}"
+
+  - type: Command
+    name: package_static_site
+    timeoutInSeconds: 300
+    command: |
+      set -euo pipefail
+      mkdir -p dist
+      tar -czf dist/foggykitchen-instance-group-hello-world.tar.gz site scripts VERSION
+      tar -tzf dist/foggykitchen-instance-group-hello-world.tar.gz
+
+outputArtifacts:
+  - name: INSTANCE_GROUP_APP_ARTIFACT
+    type: BINARY
+    location: dist/foggykitchen-instance-group-hello-world.tar.gz
